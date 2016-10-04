@@ -1,0 +1,1 @@
+#####TODO: describe rationale behind manual step in which artist profiles from touring data source will be written in some sort of tabular data format and manually cleaned to ensure search result quality. Provide examples of reliable and unreliable results.
