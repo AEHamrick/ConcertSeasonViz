@@ -1,0 +1,72 @@
+
+CREATE TABLE Genre
+(
+  genreName VARCHAR(100) NOT NULL,
+  genreParentID VARCHAR(100),
+  genreID INT NOT NULL,
+  PRIMARY KEY (genreID),
+  UNIQUE (genreName)
+);
+
+CREATE TABLE Venue
+(
+  venueID INT NOT NULL,
+  venueName VARCHAR(100) NOT NULL,
+  venueState VARCHAR(2) NOT NULL,
+  venueIsFranchise INT,
+  PRIMARY KEY (venueID)
+);
+
+CREATE TABLE Artist
+(
+  artistName VARCHAR(100) NOT NULL,
+  artistCountry VARCHAR(100),
+  artistActiveSince DATE,
+  artistID INT NOT NULL,
+  genreID INT,
+  PRIMARY KEY (artistID),
+  FOREIGN KEY (genreID) REFERENCES Genre(genreID)
+);
+
+CREATE TABLE Concert
+(
+  concertID INT NOT NULL,
+  concertDate DATE NOT NULL,
+  venueID INT NOT NULL,
+  artistID INT NOT NULL,
+  PRIMARY KEY (concertID),
+  FOREIGN KEY (venueID) REFERENCES Venue(venueID),
+  FOREIGN KEY (artistID) REFERENCES Artist(artistID)
+);
+
+CREATE TABLE AlbumTypes
+(
+  albumTypeID INT NOT NULL,
+  albumType VARCHAR(100) NOT NULL,
+  PRIMARY KEY (albumTypeID),
+  UNIQUE (albumType)
+);
+
+CREATE TABLE Album
+(
+  albumID INT NOT NULL,
+  albumName VARCHAR(100) NOT NULL,
+  albumReleaseDate DATE NOT NULL,
+  albumTypeID INT NOT NULL,
+  artistID INT NOT NULL,
+  PRIMARY KEY (albumID),
+  FOREIGN KEY (albumTypeID) REFERENCES AlbumTypes(albumTypeID),
+  FOREIGN KEY (artistID) REFERENCES Artist(artistID)
+);
+
+CREATE TABLE Songs
+(
+  songID INT NOT NULL,
+  songName VARCHAR(255) NOT NULL,
+  songTime VARCHAR(5) NOT NULL,
+  songTrackNumber INT NOT NULL,
+  albumID INT NOT NULL,
+  PRIMARY KEY (songID),
+  FOREIGN KEY (albumID) REFERENCES Album(albumID)
+);
+
