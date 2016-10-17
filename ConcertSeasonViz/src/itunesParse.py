@@ -9,10 +9,6 @@ def ParseLibForArtists(inputXML, cleanup = False):
     
     """
     
-    libraryXML = BeautifulSoup(open(inputXML),"xml")
-    artists = [] #list of tuples of (artist, genre)
-    
-    
     #As of 2016 the XML structure of the iTunes library looks like this for any given song:
     #<?xml version="1.0" encoding="UTF-8"?>
     #<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -37,15 +33,23 @@ def ParseLibForArtists(inputXML, cleanup = False):
     #e.g., each song has its own <dict> tag and child elements but there are nested tags of
     #the same name with no further identifying attributes
     
-    topLevelDict = libraryXML.find("dict").children[11].children()
-    for tag in topLevelDict.findall("dict"):
+    libraryHandle = open(inputXML)
+    libraryXML = BeautifulSoup(libraryHandle.read(),"xml")
+    artists = list() #list of tuples of (artist, genre)    
+    
+    topLevelDict = libraryXML.find("dict").contents[18]
+    print topLevelDict
+    
+    for tag in topLevelDict.find_all("dict"):
         currentArtistName = tag.find("key",string="Artist").next_siblings().string()
         currentGenreName = tag.find("key",string="Genre").next_siblings().string()
         if currentArtistName != None and currentArtistName != "":
-                #narrow genre scope for PoC
-                if "metal" in currentGenreName.lower(): 
-                    artists.append((currentArtistName,currentGenreName))
-                else:
-                    artists.append((currentArtistName,""))
+            #narrow genre scope for PoC
+            if "metal" in currentGenreName.lower(): 
+                artists.append((currentArtistName,currentGenreName))
+            else:
+                artists.append((currentArtistName,""))
                 
-            
+    return(artists)
+
+

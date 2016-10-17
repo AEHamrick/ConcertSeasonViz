@@ -206,3 +206,12 @@ class Concert:
     @date.setter
     def date(self,date):
         self.__date = date                     
+
+class Utility(object):
+    """Bucket for utility functionality that may be repeated otherwise"""
+    def __init__(self):
+        self._testXML = r'C:\Users\Evan\Desktop\Library.xml'
+    
+    @property
+    def testXML(self):
+        return self._testXML
